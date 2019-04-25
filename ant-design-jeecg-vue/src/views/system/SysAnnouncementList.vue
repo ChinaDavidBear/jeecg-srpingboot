@@ -30,22 +30,22 @@
 
     <!-- 操作按钮区域 -->
     <div class="table-operator">
-      <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
-      <a-button type="primary" icon="download" @click="handleExportXls">导出</a-button>
-      <a-upload name="file" :showUploadList="false" :multiple="false" :action="importExcelUrl" @change="handleImportExcel">
-        <a-button type="primary" icon="import">导入</a-button>
-      </a-upload>
-      <a-dropdown v-if="selectedRowKeys.length > 0">
-        <a-menu slot="overlay">
-          <a-menu-item key="1" @click="batchDel">
-            <a-icon type="delete"/>
-            删除
-          </a-menu-item>
-        </a-menu>
-        <a-button style="margin-left: 8px"> 批量操作
-          <a-icon type="down"/>
-        </a-button>
-      </a-dropdown>
+      <a-button @click="handleAdd" type="primary" v-has="'coment:add'" icon="plus">新增</a-button>
+      <!--<a-button type="primary" icon="download" @click="handleExportXls">导出</a-button>-->
+      <!--<a-upload name="file" :showUploadList="false" :multiple="false" :action="importExcelUrl" @change="handleImportExcel">-->
+        <!--<a-button type="primary" icon="import">导入</a-button>-->
+      <!--</a-upload>-->
+      <!--<a-dropdown v-if="selectedRowKeys.length > 0">-->
+        <!--<a-menu slot="overlay">-->
+          <!--<a-menu-item key="1" @click="batchDel">-->
+            <!--<a-icon type="delete"/>-->
+            <!--删除-->
+          <!--</a-menu-item>-->
+        <!--</a-menu>-->
+        <!--<a-button style="margin-left: 8px"> 批量操作-->
+          <!--<a-icon type="down"/>-->
+        <!--</a-button>-->
+      <!--</a-dropdown>-->
     </div>
 
     <!-- table区域-begin -->
@@ -68,11 +68,11 @@
         @change="handleTableChange">
 
         <span slot="action" slot-scope="text, record">
-          <a @click="handleDetail(record)">详情</a>
+          <a v-has="'coment:view'" @click="handleView(record)">详情</a>
           <a-divider type="vertical"/>
-          <a @click="handleEdit(record)">编辑</a>
+          <a v-has="'coment:edit'" @click="handleEdit(record)">编辑</a>
           <a-divider type="vertical"/>
-          <a-dropdown>
+          <a-dropdown v-has="'coment:more'">
             <a class="ant-dropdown-link">更多 <a-icon type="down"/></a>
             <a-menu slot="overlay">
               <a-menu-item>
@@ -100,11 +100,13 @@
 
     <!-- 表单区域 -->
     <sysAnnouncement-modal ref="modalForm" @ok="modalFormOk"></sysAnnouncement-modal>
+    <SysAnnouncementViewModal ref="modalViewForm" @ok="modalFormOk"></SysAnnouncementViewModal>
   </a-card>
 </template>
 
 <script>
   import SysAnnouncementModal from './modules/SysAnnouncementModal'
+  import SysAnnouncementViewModal from './modules/SysAnnouncementViewModal'
   import {doReleaseData, doReovkeData} from '@/api/api'
   import {JeecgListMixin} from '@/mixins/JeecgListMixin'
 
@@ -112,7 +114,8 @@
     name: "SysAnnouncementList",
     mixins: [JeecgListMixin],
     components: {
-      SysAnnouncementModal
+      SysAnnouncementModal,
+      SysAnnouncementViewModal
     },
     data() {
       return {
@@ -266,6 +269,11 @@
             that.$message.warning(res.message);
           }
         });
+      },
+      handleView:function(record){
+        this.$refs.modalViewForm.edit(record);
+        this.$refs.modalViewForm.title="详情";
+        this.$refs.modalViewForm.disableSubmit = true;
       },
     }
   }

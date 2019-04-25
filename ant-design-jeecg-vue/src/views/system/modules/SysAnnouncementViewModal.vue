@@ -4,6 +4,8 @@
     :width="800"
     :visible="visible"
     :confirmLoading="confirmLoading"
+    :okButtonProps="{okButtonProps}"
+    footer=""
     @ok="handleOk"
     @cancel="handleCancel"
     cancelText="关闭">
@@ -94,13 +96,14 @@
   import moment from "moment"
 
   export default {
-    name: "SysAnnouncementModal",
+    name: "SysAnnouncementViewModal",
     data () {
       return {
         title:"操作",
         footer:"",
         visible: false,
         disableSubmit:false,
+        okButtonProps:{disable:true},
         model: {},
         labelCol: {
           xs: { span: 24 },

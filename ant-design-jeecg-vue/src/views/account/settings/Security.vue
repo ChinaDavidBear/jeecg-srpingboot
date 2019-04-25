@@ -13,10 +13,11 @@
         </span>
       </a-list-item-meta>
       <template v-if="item.actions">
-        <a slot="actions" @click="handleChangePassword">修改</a>
+        <a slot="actions" @click="item.actions.callback">{{ item.actions.title }}</a>
       </template>
-      <PasswordModal ref="passwordmodal" @ok="passwordModalOk"></PasswordModal>
     </a-list-item>
+    <PasswordModal ref="passwordmodal" @ok="passwordModalOk"></PasswordModal>
+    <user-modal ref="userModalForm" @ok="userModalFormOk"></user-modal>
   </a-list>
 
 </template>
@@ -24,24 +25,37 @@
 <script>
 
   import PasswordModal from './PasswordModal'
+  import UserModal from './UserModal'
   export default {
     components: {
-      PasswordModal
+      PasswordModal,
+      UserModal
     },
     data () {
       return {
         data: [
-          { title: '账户密码' , description: '请保证密码安全', value: '', actions: { title: '修改', callback: () => { this.handleChangePassword('This is a normal message'); } } },
-
+          { title: '账户信息' , description: '可以对账户信息进行编辑', value: '', actions: { title: '修改', callback: () => { this.updateUserInfo(); } } },
+          { title: '账户密码' , description: '请保证密码安全', value: '', actions: { title: '修改', callback: () => { this.handleChangePassword(); } } },
         ]
       }
     },
     methods:{
       handleChangePassword() {
-        let userinfo = JSON.parse(localStorage.getItem('pro__Login_Userinfo'));
-        console.info(userinfo.value.username);
-        this.$refs.passwordmodal.show(userinfo.value.username);
+        let userinfo = this.$store.getters.userInfo
+        this.$refs.passwordmodal.show(userinfo.username);
       },
+      passwordModalOk(){
+
+      },
+      updateUserInfo(){
+        let userinfo = this.$store.getters.userInfo
+        this.$refs.userModalForm.edit(userinfo);
+        this.$refs.userModalForm.title = "编辑";
+        this.$refs.userModalForm.disableSubmit = false;
+      },
+      userModalFormOk(){
+
+      }
     }
   }
 </script>

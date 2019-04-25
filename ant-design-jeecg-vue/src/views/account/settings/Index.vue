@@ -10,16 +10,16 @@
             type="inner"
             @openChange="onOpenChange"
           >
-            <a-menu-item key="/account/settings/base">
-              <router-link :to="{ name: 'account-settings-base' }">
-                基本设置
-              </router-link>
-            </a-menu-item>
-            <!--<a-menu-item key="/account/settings/security">-->
-              <!--<router-link :to="{ name: 'account-settings-security' }">-->
-                <!--安全设置-->
+            <!--<a-menu-item key="/account/settings/base">-->
+              <!--<router-link :to="{ name: 'account-settings-base' }">-->
+                <!--基本设置-->
               <!--</router-link>-->
             <!--</a-menu-item>-->
+            <a-menu-item key="/account/settings/security">
+              <router-link :to="{ name: 'account-settings-security' }">
+                安全设置
+              </router-link>
+            </a-menu-item>
             <!--<a-menu-item key="/account/settings/custom">-->
               <!--<router-link :to="{ name: 'account-settings-custom' }">-->
                 <!--个性化-->
